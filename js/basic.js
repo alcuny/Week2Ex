@@ -57,11 +57,11 @@ function duplicateChecker(username, email, admin, picture) {
             
             let img = rows[row].childNodes[3].querySelector('img');
             
-            // If the img element doesn't exist in the fourth column, create it
+            // If the img element doesn't exist in the fourth column, it will be created
             if (!img) {
                 img = document.createElement('img');
-                img.width = 100;
-                img.height = 100;
+                img.width = 64;
+                img.height = 64;
                 rows[row].childNodes[3].appendChild(img);
             }
             
