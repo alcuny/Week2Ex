@@ -11,9 +11,12 @@ myForm.addEventListener('submit', (event) => {
     const admin = document.getElementById('input-admin').checked ? 'X' : '-';
     const pictureInput = document.getElementById('input-image');
     
-    // Check if a file is selected
+    // Check if a file is selected, - is when not selected.
+    let picture = '-';
     if (pictureInput.files.length > 0) {
-      const picture = pictureInput.files[0];
+
+      picture = pictureInput.files[0];
+    }
       
       // check if the username exist by calling duplicatechecker function
       if (!duplicateChecker(username, email, admin, picture)) {
@@ -30,18 +33,24 @@ myForm.addEventListener('submit', (event) => {
         const adminCell = document.createElement('td');
         adminCell.textContent = admin;
         newRow.appendChild(adminCell);
-
-        const img = document.createElement('img');
-        img.src = URL.createObjectURL(picture);
-        img.width = 64;
-        img.height = 64;
-        const imageCell = document.createElement('td'); // Create a new cell for the image
-        imageCell.appendChild(img);
-        newRow.appendChild(imageCell);
-
+        // When the user provides a picture
+        if(picture != '-'){
+            const img = document.createElement('img');
+            img.src = URL.createObjectURL(picture);
+            img.width = 64;
+            img.height = 64;
+            const imageCell = document.createElement('td'); // Create a new cell for the image
+            imageCell.appendChild(img);
+            newRow.appendChild(imageCell);
+        }else {
+            const imageCell = document.createElement('td');
+            imageCell.textContent = picture;
+            newRow.appendChild(imageCell);
+        }
+        
         myTable.querySelector('tbody').appendChild(newRow);
       }
-    }
+    
   });
   
 
@@ -55,8 +64,9 @@ function duplicateChecker(username, email, admin, picture) {
             rows[row].childNodes[1].textContent = email;
             rows[row].childNodes[2].textContent = admin;
             
-            let img = rows[row].childNodes[3].querySelector('img');
-            
+            if(picture != '-'){
+                let img = rows[row].childNodes[3].querySelector('img');
+                
             // If the img element doesn't exist in the fourth column, it will be created
             if (!img) {
                 img = document.createElement('img');
@@ -65,15 +75,15 @@ function duplicateChecker(username, email, admin, picture) {
                 rows[row].childNodes[3].appendChild(img);
             }
             
-            img.src = URL.createObjectURL(picture);
-            
+                img.src = URL.createObjectURL(picture);
+        }
             check = true;
         }    
     }
     return check;
 }
 
-
+// For emptying table
 empty.addEventListener('click', function() {
     // selecting all the rows from the body
     const rows = myTable.querySelectorAll('tbody tr');
